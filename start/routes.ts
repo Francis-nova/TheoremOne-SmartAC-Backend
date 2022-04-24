@@ -12,12 +12,12 @@ Route.get('/', async () => {
  */
 Route
     .group(() => {
-        Route.post('/registration', 'Devices/AuthController.registration') // registration a device...
+        Route.post('/registration', 'Devices/AuthController.registration'); // registration a device...
 
         // report group...
         Route.group(() => {
-            Route.post('/', 'Devices/ReportsController.reportSensorReadings') // report
+            Route.post('/', 'Devices/ReportsController.reportSensorReadings'); // report
         }).prefix('/reports').middleware('deviceAuth');
 
     })
-    .prefix('/device')
+    .prefix('/device');

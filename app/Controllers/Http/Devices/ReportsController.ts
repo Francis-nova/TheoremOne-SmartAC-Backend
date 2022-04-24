@@ -1,7 +1,7 @@
-import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import { schema } from '@ioc:Adonis/Core/Validator'
-import Report from 'App/Models/Report'
-import Alert from 'App/Models/Alert'
+import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
+import { schema } from '@ioc:Adonis/Core/Validator';
+import Report from 'App/Models/Report';
+import Alert from 'App/Models/Alert';
 
 import {toTimestamp} from './../../../../helpers/index';
 
@@ -66,14 +66,14 @@ export default class ReportsController {
         if (data?.healthStatus !== 'OK') {
             try {
                 const alertNote = `Device is reporting health problem - ${data.healthStatus}`;
-                const searchPayload = { serial_number: data.serialNo, alert_note: alertNote, resolve_state: 'new', alert_state: 'new' }
+                const searchPayload = { serial_number: data.serialNo, alert_note: alertNote, resolve_state: 'new', alert_state: 'new' };
                 const persistancePayload = { 
                     serial_number: data.serialNo,
                     alert_note: alertNote,
                     reference: `${data.serialNo}-${toTimestamp(data.timestamp)}`,
                     device_recorded_alert_at: data.timestamp,
-                }
-                await Alert.updateOrCreate(searchPayload, persistancePayload)
+                };
+                await Alert.updateOrCreate(searchPayload, persistancePayload);
 
             } catch (error) {
                 // TOdo handle exception
@@ -83,15 +83,15 @@ export default class ReportsController {
         // Carbon Monoxide at dangerous levels
         if (data?.carbonMonoxide > 9.00) {
             try {
-                const alertNote = `CO value has exceeded danger limit`;
-                const searchPayload = { serial_number: data.serialNo, alert_note: alertNote, resolve_state: 'new', alert_state: 'new'  }
+                const alertNote = 'CO value has exceeded danger limit';
+                const searchPayload = { serial_number: data.serialNo, alert_note: alertNote, resolve_state: 'new', alert_state: 'new'  };
                 const persistancePayload = { 
                     serial_number: data.serialNo,
                     alert_note: alertNote,
                     reference: `${data.serialNo}-${toTimestamp(data.timestamp)}`,
                     device_recorded_alert_at: data.timestamp,
-                }
-                await Alert.updateOrCreate(searchPayload, persistancePayload)
+                };
+                await Alert.updateOrCreate(searchPayload, persistancePayload);
             } catch (error) {
                 // TOdo handle exception
             }
@@ -100,15 +100,15 @@ export default class ReportsController {
         // check temperature...
         if (data?.temp > 100.00 || data?.temp < -30.00) {
             try {
-                const alertNote = `Sensor temperature has value out of range`;
-                const searchPayload = { serial_number: data.serialNo, alert_note: alertNote, resolve_state: 'new', alert_state: 'new'  }
+                const alertNote = 'Sensor temperature has value out of range';
+                const searchPayload = { serial_number: data.serialNo, alert_note: alertNote, resolve_state: 'new', alert_state: 'new'  };
                 const persistancePayload = { 
                     serial_number: data.serialNo,
                     alert_note: alertNote,
                     reference: `${data.serialNo}-${toTimestamp(data.timestamp)}`,
                     device_recorded_alert_at: data.timestamp,
-                }
-                await Alert.updateOrCreate(searchPayload, persistancePayload)
+                };
+                await Alert.updateOrCreate(searchPayload, persistancePayload);
             } catch (error) {
                 // TOdo handle exception
             }
@@ -117,15 +117,15 @@ export default class ReportsController {
         // check humidity 
         if (data?.humidity > 100.00 || data?.humidity < 0.00) {
             try {
-                const alertNote = `Sensor humidity has value out of range`;
-                const searchPayload = { serial_number: data.serialNo, alert_note: alertNote, resolve_state: 'new', alert_state: 'new'  }
+                const alertNote = 'Sensor humidity has value out of range';
+                const searchPayload = { serial_number: data.serialNo, alert_note: alertNote, resolve_state: 'new', alert_state: 'new'  };
                 const persistancePayload = { 
                     serial_number: data.serialNo,
                     alert_note: alertNote,
                     reference: `${data.serialNo}-${toTimestamp(data.timestamp)}`,
                     device_recorded_alert_at: data.timestamp,
-                }
-                await Alert.updateOrCreate(searchPayload, persistancePayload)
+                };
+                await Alert.updateOrCreate(searchPayload, persistancePayload);
             } catch (error) {
                 // TOdo handle exception
             }
@@ -133,15 +133,15 @@ export default class ReportsController {
 
         if (data?.carbonMonoxide > 1000.00 || data?.carbonMonoxide < 0.00) {
             try {
-                const alertNote = `Sensor carbon has value out of range`;
-                const searchPayload = { serial_number: data.serialNo, alert_note: alertNote, resolve_state: 'new', alert_state: 'new'  }
+                const alertNote = 'Sensor carbon has value out of range';
+                const searchPayload = { serial_number: data.serialNo, alert_note: alertNote, resolve_state: 'new', alert_state: 'new'  };
                 const persistancePayload = { 
                     serial_number: data.serialNo,
                     alert_note: alertNote,
                     reference: `${data.serialNo}-${toTimestamp(data.timestamp)}`,
                     device_recorded_alert_at: data.timestamp,
-                }
-                await Alert.updateOrCreate(searchPayload, persistancePayload)
+                };
+                await Alert.updateOrCreate(searchPayload, persistancePayload);
             } catch (error) {
                 // TOdo handle exception
             }

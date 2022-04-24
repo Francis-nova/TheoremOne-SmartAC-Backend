@@ -4,5 +4,5 @@ export type ReportData = {
     carbonMonoxide: number
     healthStatus: string;
     serialNo: string;
-    timestamp: String
+    timestamp: string
 }

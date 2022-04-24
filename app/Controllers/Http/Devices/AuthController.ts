@@ -1,6 +1,6 @@
-import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import { schema } from '@ioc:Adonis/Core/Validator'
-import Device from 'App/Models/Device'
+import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
+import { schema } from '@ioc:Adonis/Core/Validator';
+import Device from 'App/Models/Device';
 
 // import helper...
 import { tokenGenerator } from './../../../../helpers/index';
