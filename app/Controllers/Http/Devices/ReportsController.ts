@@ -64,14 +64,17 @@ export default class ReportsController {
     public async alertChecker(data: any) {
         // first check health status...
         if (data?.healthStatus !== 'OK') {
-
             try {
-                await Alert.create({
-                    'serial_number': data.serialNo,
-                    'alert_note': `Device is reporting health problem - ${data.healthStatus}`,
-                    'reference': `${data.serialNo}-${toTimestamp(data.timestamp)}`,
-                    'device_recorded_alert_at': data.timestamp,
-                });
+                const alertNote = `Device is reporting health problem - ${data.healthStatus}`;
+                const searchPayload = { serial_number: data.serialNo, alert_note: alertNote, resolve_state: 'new', alert_state: 'new' }
+                const persistancePayload = { 
+                    serial_number: data.serialNo,
+                    alert_note: alertNote,
+                    reference: `${data.serialNo}-${toTimestamp(data.timestamp)}`,
+                    device_recorded_alert_at: data.timestamp,
+                }
+                await Alert.updateOrCreate(searchPayload, persistancePayload)
+
             } catch (error) {
                 // TOdo handle exception
             }
@@ -80,12 +83,15 @@ export default class ReportsController {
         // Carbon Monoxide at dangerous levels
         if (data?.carbonMonoxide > 9.00) {
             try {
-                await Alert.create({
-                    'serial_number': data.serialNo,
-                    'alert_note': `CO value has exceeded danger limit`,
-                    'reference': `${data.serialNo}-${toTimestamp(data.timestamp)}`,
-                    'device_recorded_alert_at': data.timestamp,
-                });
+                const alertNote = `CO value has exceeded danger limit`;
+                const searchPayload = { serial_number: data.serialNo, alert_note: alertNote, resolve_state: 'new', alert_state: 'new'  }
+                const persistancePayload = { 
+                    serial_number: data.serialNo,
+                    alert_note: alertNote,
+                    reference: `${data.serialNo}-${toTimestamp(data.timestamp)}`,
+                    device_recorded_alert_at: data.timestamp,
+                }
+                await Alert.updateOrCreate(searchPayload, persistancePayload)
             } catch (error) {
                 // TOdo handle exception
             }
@@ -94,12 +100,15 @@ export default class ReportsController {
         // check temperature...
         if (data?.temp > 100.00 || data?.temp < -30.00) {
             try {
-                await Alert.create({
-                    'serial_number': data.serialNo,
-                    'alert_note': `Sensor temperature has value out of range - ${data?.temp}`,
-                    'reference': `${data.serialNo}-${toTimestamp(data.timestamp)}`,
-                    'device_recorded_alert_at': data.timestamp,
-                });
+                const alertNote = `Sensor temperature has value out of range`;
+                const searchPayload = { serial_number: data.serialNo, alert_note: alertNote, resolve_state: 'new', alert_state: 'new'  }
+                const persistancePayload = { 
+                    serial_number: data.serialNo,
+                    alert_note: alertNote,
+                    reference: `${data.serialNo}-${toTimestamp(data.timestamp)}`,
+                    device_recorded_alert_at: data.timestamp,
+                }
+                await Alert.updateOrCreate(searchPayload, persistancePayload)
             } catch (error) {
                 // TOdo handle exception
             }
@@ -108,12 +117,15 @@ export default class ReportsController {
         // check humidity 
         if (data?.humidity > 100.00 || data?.humidity < 0.00) {
             try {
-                await Alert.create({
-                    'serial_number': data.serialNo,
-                    'alert_note': `Sensor humidity has value out of range - ${data?.humidity}`,
-                    'reference': `${data.serialNo}-${toTimestamp(data.timestamp)}`,
-                    'device_recorded_alert_at': data.timestamp,
-                });
+                const alertNote = `Sensor humidity has value out of range`;
+                const searchPayload = { serial_number: data.serialNo, alert_note: alertNote, resolve_state: 'new', alert_state: 'new'  }
+                const persistancePayload = { 
+                    serial_number: data.serialNo,
+                    alert_note: alertNote,
+                    reference: `${data.serialNo}-${toTimestamp(data.timestamp)}`,
+                    device_recorded_alert_at: data.timestamp,
+                }
+                await Alert.updateOrCreate(searchPayload, persistancePayload)
             } catch (error) {
                 // TOdo handle exception
             }
@@ -121,12 +133,15 @@ export default class ReportsController {
 
         if (data?.carbonMonoxide > 1000.00 || data?.carbonMonoxide < 0.00) {
             try {
-                await Alert.create({
-                    'serial_number': data.serialNo,
-                    'alert_note': `Sensor carbon monoxide has value out of range - ${data?.carbonMonoxide}`,
-                    'reference': `${data.serialNo}-${toTimestamp(data.timestamp)}`,
-                    'device_recorded_alert_at': data.timestamp,
-                });
+                const alertNote = `Sensor carbon has value out of range`;
+                const searchPayload = { serial_number: data.serialNo, alert_note: alertNote, resolve_state: 'new', alert_state: 'new'  }
+                const persistancePayload = { 
+                    serial_number: data.serialNo,
+                    alert_note: alertNote,
+                    reference: `${data.serialNo}-${toTimestamp(data.timestamp)}`,
+                    device_recorded_alert_at: data.timestamp,
+                }
+                await Alert.updateOrCreate(searchPayload, persistancePayload)
             } catch (error) {
                 // TOdo handle exception
             }
