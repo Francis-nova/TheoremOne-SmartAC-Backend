@@ -2,8 +2,19 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Device from 'App/Models/Device'
 
 export default class DeviceAuth {
-  public async handle({}: HttpContextContract, next: () => Promise<void>) {
-    // code for middleware goes here. ABOVE THE NEXT CALL
+  public async handle({request, response}: HttpContextContract, next: () => Promise<void>) {
+    // get request bearer...
+    const accessToken: any = request.headers()?.authorization;
+
+    // split bearer form data...
+    const splitToken = accessToken.split(' ');
+
+    const device = await Device.findBy('token', splitToken[1]); 
+
+    if(!device) {
+      response.unauthorized({ error: 'unauthorized access' })
+      return
+    }
     
     await next()
   }
