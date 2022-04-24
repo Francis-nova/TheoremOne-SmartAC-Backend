@@ -14,3 +14,8 @@ export const convertDateTimeToMysql = (dateValue: string): string => {
     const mysqlDateString = myDate.substring(0, myDate.length - 5);
     return mysqlDateString;
 }
+
+export const toTimestamp = (date): number =>{
+    var datum = Date.parse(date);
+    return datum/1000;
+}
