@@ -28,6 +28,12 @@ export default class Alert extends BaseModel {
   @column()
   public alert_state: string;
 
+  @column()
+  public alert_data_type: string;
+
+  @column()
+  public alert_sensor: string;
+
   // the resolve state of the alert (new, resolved, ignored )
   @column()
   public resolve_state: string;

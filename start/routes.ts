@@ -16,8 +16,9 @@ Route
 
         // report group...
         Route.group(() => {
-            Route.post('/', 'Devices/ReportsController.reportSensorReadings'); // report
-        }).prefix('/reports').middleware('deviceAuth');
+            Route.post('/', 'Devices/ReportsController.reportSensorReadings')
+                .middleware('handleBadReportRequest'); // report
+        }).prefix('/reports').middleware(['deviceAuth']);
 
     })
     .prefix('/device');

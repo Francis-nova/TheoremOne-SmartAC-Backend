@@ -26,6 +26,12 @@ export default class Alerts extends BaseSchema {
             // alert note
             table.text('alert_note', 'longtext');
 
+            // sensor
+            table.enu('alert_sensor', ['temperature', 'humidity', 'carbon monoxide', 'health', 'formatError']); // temp, humidity, 
+
+            // alert data...
+            table.string('alert_data_type', 100);
+            
             // reference
             table.string('reference', 100);
 

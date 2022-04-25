@@ -1,9 +1,8 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 import { schema } from '@ioc:Adonis/Core/Validator';
 import Report from 'App/Models/Report';
-import Alert from 'App/Models/Alert';
 
-import {toTimestamp} from './../../../../helpers/index';
+import Event from '@ioc:Adonis/Core/Event'
 
 export default class ReportsController {
 
@@ -42,7 +41,8 @@ export default class ReportsController {
             if (reportData) {
 
                 /*** check for alerts... */
-                this.alertChecker(requestBody);
+                // this.alertChecker(requestBody);
+                Event.emit('new:report', requestBody)
 
                 return ctx.response.status(201).send({
                     status: true,
@@ -59,93 +59,4 @@ export default class ReportsController {
             }, true);
         }
     }
-
-    // Alert checker...
-    public async alertChecker(data: any) {
-        // first check health status...
-        if (data?.healthStatus !== 'OK') {
-            try {
-                const alertNote = `Device is reporting health problem - ${data.healthStatus}`;
-                const searchPayload = { serial_number: data.serialNo, alert_note: alertNote, resolve_state: 'new', alert_state: 'new' };
-                const persistancePayload = { 
-                    serial_number: data.serialNo,
-                    alert_note: alertNote,
-                    reference: `${data.serialNo}-${toTimestamp(data.timestamp)}`,
-                    device_recorded_alert_at: data.timestamp,
-                };
-                await Alert.updateOrCreate(searchPayload, persistancePayload);
-
-            } catch (error) {
-                // TOdo handle exception
-            }
-        }
-
-        // Carbon Monoxide at dangerous levels
-        if (data?.carbonMonoxide > 9.00) {
-            try {
-                const alertNote = 'CO value has exceeded danger limit';
-                const searchPayload = { serial_number: data.serialNo, alert_note: alertNote, resolve_state: 'new', alert_state: 'new'  };
-                const persistancePayload = { 
-                    serial_number: data.serialNo,
-                    alert_note: alertNote,
-                    reference: `${data.serialNo}-${toTimestamp(data.timestamp)}`,
-                    device_recorded_alert_at: data.timestamp,
-                };
-                await Alert.updateOrCreate(searchPayload, persistancePayload);
-            } catch (error) {
-                // TOdo handle exception
-            }
-        }
-
-        // check temperature...
-        if (data?.temp > 100.00 || data?.temp < -30.00) {
-            try {
-                const alertNote = 'Sensor temperature has value out of range';
-                const searchPayload = { serial_number: data.serialNo, alert_note: alertNote, resolve_state: 'new', alert_state: 'new'  };
-                const persistancePayload = { 
-                    serial_number: data.serialNo,
-                    alert_note: alertNote,
-                    reference: `${data.serialNo}-${toTimestamp(data.timestamp)}`,
-                    device_recorded_alert_at: data.timestamp,
-                };
-                await Alert.updateOrCreate(searchPayload, persistancePayload);
-            } catch (error) {
-                // TOdo handle exception
-            }
-        }
-
-        // check humidity 
-        if (data?.humidity > 100.00 || data?.humidity < 0.00) {
-            try {
-                const alertNote = 'Sensor humidity has value out of range';
-                const searchPayload = { serial_number: data.serialNo, alert_note: alertNote, resolve_state: 'new', alert_state: 'new'  };
-                const persistancePayload = { 
-                    serial_number: data.serialNo,
-                    alert_note: alertNote,
-                    reference: `${data.serialNo}-${toTimestamp(data.timestamp)}`,
-                    device_recorded_alert_at: data.timestamp,
-                };
-                await Alert.updateOrCreate(searchPayload, persistancePayload);
-            } catch (error) {
-                // TOdo handle exception
-            }
-        }
-
-        if (data?.carbonMonoxide > 1000.00 || data?.carbonMonoxide < 0.00) {
-            try {
-                const alertNote = 'Sensor carbon has value out of range';
-                const searchPayload = { serial_number: data.serialNo, alert_note: alertNote, resolve_state: 'new', alert_state: 'new'  };
-                const persistancePayload = { 
-                    serial_number: data.serialNo,
-                    alert_note: alertNote,
-                    reference: `${data.serialNo}-${toTimestamp(data.timestamp)}`,
-                    device_recorded_alert_at: data.timestamp,
-                };
-                await Alert.updateOrCreate(searchPayload, persistancePayload);
-            } catch (error) {
-                // TOdo handle exception
-            }
-        }
-    }
-
 }

@@ -2,6 +2,10 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 import { schema } from '@ioc:Adonis/Core/Validator';
 import Device from 'App/Models/Device';
 
+import Alert from 'App/Models/Alert';
+
+import DateTime from 'luxon';
+
 // import helper...
 import { tokenGenerator } from './../../../../helpers/index';
 
@@ -50,6 +54,13 @@ export default class AuthenticationController {
                 'firmware_version': requestBody.firmwareVersion,
                 'token': token // generated token... 
             });
+
+            // check device if has alert error..
+            await Alert.query().update({ 
+                resolve_state: 'resolved', 
+                resolved_alert_at: DateTime
+            })
+            .where({ serial_number: requestBody.serialNo, alert_sensor: 'formatError' });
 
             return ctx.response.status(201).send({
                 status: true,
