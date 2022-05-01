@@ -2,7 +2,7 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 import { schema } from '@ioc:Adonis/Core/Validator';
 import Report from 'App/Models/Report';
 
-import Event from '@ioc:Adonis/Core/Event'
+import Event from '@ioc:Adonis/Core/Event';
 
 export default class ReportsController {
 
@@ -40,9 +40,14 @@ export default class ReportsController {
             // check if successful...
             if (reportData) {
 
+                // report Data Id
+                const reportDataId = reportData.id;
+
+                requestBody['sensorId'] = reportDataId; // add reportDataId to data object... 
+
                 /*** check for alerts... */
                 // this.alertChecker(requestBody);
-                Event.emit('new:report', requestBody)
+                Event.emit('new:report', requestBody);
 
                 return ctx.response.status(201).send({
                     status: true,

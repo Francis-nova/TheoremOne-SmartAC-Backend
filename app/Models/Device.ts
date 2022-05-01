@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm';
+import { column, BaseModel } from '@ioc:Adonis/Lucid/Orm';
 
 export default class Device extends BaseModel {
   @column({ isPrimary: true })
@@ -15,7 +15,7 @@ export default class Device extends BaseModel {
   public token: string;
 
   @column.dateTime({ autoCreate: true })
-  public created_at: DateTime;
+  public created_at?: DateTime;
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updated_at: DateTime;

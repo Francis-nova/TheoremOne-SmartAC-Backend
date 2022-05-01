@@ -8,10 +8,12 @@
 import '@japa/runner';
 
 declare module '@japa/runner' {
+  // tslint:disable-next-line
   interface TestContext {
     // Extend context
   }
 
+  // tslint:disable-next-line
   interface Test<TestData> {
     // Extend test
   }

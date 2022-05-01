@@ -40,5 +40,6 @@ Server.middleware.register([() => import('@ioc:Adonis/Core/BodyParser')]);
 */
 Server.middleware.registerNamed({
     deviceAuth: () => import('App/Middleware/DeviceAuth'),
-    handleBadReportRequest: () => import('App/Middleware/HandleBadReportRequest')    
+    handleBadReportRequest: () => import('App/Middleware/HandleBadReportRequest'),
+    auth: () => import('App/Middleware/Auth')
 });

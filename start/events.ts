@@ -9,16 +9,19 @@
 */
 import Event from '@ioc:Adonis/Core/Event';
 import Alert from 'App/Models/Alert';
+import Database from '@ioc:Adonis/Lucid/Database';
 
 import { toTimestamp } from './../helpers/index';
-import { DateTime } from 'luxon';
 
 Event.on('new:report', async (data) => {
+
+
+    console.log(data?.sensorId);
 
     // first check health status...
     if (data?.healthStatus !== 'OK') {
         try {
-            const alertNote = `Device is reporting health problem`;
+            const alertNote = 'Device is reporting health problem';
             const searchPayload = { serial_number: data.serialNo, alert_note: alertNote, resolve_state: 'new', alert_state: 'new', alert_sensor: 'health' };
             const persistancePayload = {
                 serial_number: data.serialNo,
@@ -26,7 +29,8 @@ Event.on('new:report', async (data) => {
                 reference: `${data.serialNo}-${toTimestamp(data.timestamp)}`,
                 device_recorded_alert_at: data.timestamp,
                 alert_sensor: 'health',
-                alert_data_type: data.healthStatus
+                alert_data_type: data.healthStatus,
+                sensor_id: data.sensorId
             };
             await Alert.updateOrCreate(searchPayload, persistancePayload);
 
@@ -54,7 +58,8 @@ Event.on('new:report', async (data) => {
                 reference: `${data.serialNo}-${toTimestamp(data.timestamp)}`,
                 device_recorded_alert_at: data.timestamp,
                 alert_sensor: 'carbon monoxide',
-                alert_data_type: data?.carbonMonoxide
+                alert_data_type: data?.carbonMonoxide,
+                sensor_id: data.sensorId
             };
             await Alert.updateOrCreate(searchPayload, persistancePayload);
         } catch (error) {
@@ -80,6 +85,7 @@ Event.on('new:report', async (data) => {
                 alert_note: alertNote,
                 reference: `${data.serialNo}-${toTimestamp(data.timestamp)}`,
                 device_recorded_alert_at: data.timestamp,
+                sensor_id: data.sensorId
             };
             await Alert.updateOrCreate(searchPayload, persistancePayload);
         } catch (error) {
@@ -105,6 +111,7 @@ Event.on('new:report', async (data) => {
                 alert_note: alertNote,
                 reference: `${data.serialNo}-${toTimestamp(data.timestamp)}`,
                 device_recorded_alert_at: data.timestamp,
+                sensor_id: data.sensorId
             };
             await Alert.updateOrCreate(searchPayload, persistancePayload);
         } catch (error) {
@@ -118,6 +125,9 @@ Event.on('new:report', async (data) => {
             resolve_state: 'resolved',
             resolved_alert_at: data.timestamp
         })
-        .where({ serial_number: data.serialNo, alert_sensor: 'humidity' });
+            .where({ serial_number: data.serialNo, alert_sensor: 'humidity' });
 
-})
+});
+
+
+Event.on('db:query', Database.prettyPrint);

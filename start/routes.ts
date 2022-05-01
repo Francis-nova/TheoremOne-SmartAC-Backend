@@ -22,3 +22,29 @@ Route
 
     })
     .prefix('/device');
+
+
+// user routes...
+Route.post('users/signin', 'Users/AuthController.signIn'); // user sign in...
+
+/**
+ * Users Routes
+ */
+Route.group(() => {
+    
+    Route.get('signout', 'Users/AuthController.signOut'); // user sign out...
+    
+    // devices endpoint...
+    Route.get('devices', 'Users/DevicesController.getAllDevices');
+    Route.get('device-sensor-readings', 'Users/DevicesController.sensorReadings');
+    Route.get('device-sensor-readings-data', 'Users/DevicesController.sensorReadingsData');
+
+    // alerts endpoints...
+    Route.get('alerts', 'Users/AlertsController.alerts');
+    Route.patch('mark-alerts', 'Users/AlertsController.markAlerts');
+
+
+    Route.get('alert-report', 'Users/AlertsController.alertReports');
+
+
+}).prefix('/users').middleware('auth:api');
