@@ -23,10 +23,10 @@ export default class ReportsController {
          */
         await ctx.request.validate({ schema: newDeviceReportSchema });
 
-        // get request body...
-        const requestBody = ctx.request.body();
-
         try {
+
+            const requestBody = ctx.request.body();
+
             // save report data...
             const reportData = await Report.create({
                 'serial_number': requestBody.serialNo,
@@ -46,7 +46,6 @@ export default class ReportsController {
                 requestBody['sensorId'] = reportDataId; // add reportDataId to data object... 
 
                 /*** check for alerts... */
-                // this.alertChecker(requestBody);
                 Event.emit('new:report', requestBody);
 
                 return ctx.response.status(201).send({
@@ -54,14 +53,8 @@ export default class ReportsController {
                     msg: 'Report collected successfully',
                 }, true);
             }
-
         } catch (error) {
-            // TO do process failed request...
-            return ctx.response.status(400).send({
-                status: true,
-                msg: 'Failed to collect report data...',
-                error: error
-            }, true);
+            ctx.response.badRequest(error.messages);
         }
     }
 }

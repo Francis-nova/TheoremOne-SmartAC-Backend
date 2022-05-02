@@ -46,7 +46,7 @@ export default class AuthenticationController {
                 deviceCheck.updated_at = DateTime.now().toUTC(),
                 await deviceCheck.save(); // save
 
-                return ctx.response.status(200).send({
+                return ctx.response.status(201).send({
                     status: true,
                     accessToken: token,
                     updated_at: DateTime.now().toUTC(),

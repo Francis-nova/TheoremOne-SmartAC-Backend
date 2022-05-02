@@ -15,9 +15,6 @@ import { toTimestamp } from './../helpers/index';
 
 Event.on('new:report', async (data) => {
 
-
-    console.log(data?.sensorId);
-
     // first check health status...
     if (data?.healthStatus !== 'OK') {
         try {
@@ -128,6 +125,5 @@ Event.on('new:report', async (data) => {
             .where({ serial_number: data.serialNo, alert_sensor: 'humidity' });
 
 });
-
 
 Event.on('db:query', Database.prettyPrint);

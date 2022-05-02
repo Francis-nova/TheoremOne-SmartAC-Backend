@@ -6,7 +6,7 @@ import { schema } from '@ioc:Adonis/Core/Validator';
 
 export default class DevicesController {
 
-    public async getAllDevices ({request}) {
+    public async getAllDevices({ request }) {
 
         const validator = schema.create({
             limit: schema.number.optional(),
@@ -32,21 +32,25 @@ export default class DevicesController {
 
         // date parameter...
         const startDate = request.input('dateStart') ? moment(request.input('dateStart')).format('yyyy-MM-DD') : '';
-        const endDate = request.input('dateEnd')? moment(request.input('dateEnd')).format('yyyy-MM-DD') : '';
+        const endDate = request.input('dateEnd') ? moment(request.input('dateEnd')).format('yyyy-MM-DD') : '';
 
-        const devices = await Device
-            .query()
-            .where('serial_number', '!=', serialNo)
-            .orWhere('updated_at', '>=', startDate)
-            .andWhere('updated_at', '<=', endDate)
-            .orderBy('updated_at', 'desc')
-            .debug(true)
-            .paginate(page, limit);
+        const devices = Device.query();
 
-        return devices.toJSON();
-    }   
+        if (serialNo) {
+            devices.where('serial_number', '!=', serialNo);
+        }
 
-    public async sensorReadings({request, response}) {
+        if (startDate && endDate) {
+            devices.orWhere('updated_at', '>=', startDate);
+            devices.andWhere('updated_at', '<=', endDate);
+        }
+
+        const results = await devices.orderBy('updated_at', 'desc').paginate(page, limit);
+
+        return results;
+    }
+
+    public async sensorReadings({ request, response }) {
 
         // validate data
         const validator = schema.create({
@@ -72,9 +76,9 @@ export default class DevicesController {
         const page = request.input('page', 1);
         const limit = request.input('limit', 10);
         const startDate = request.input('dateStart') ? moment(request.input('dateStart')).format('yyyy-MM-DD') : '';
-        const endDate = request.input('dateEnd')? moment(request.input('dateEnd')).format('yyyy-MM-DD') : '';
+        const endDate = request.input('dateEnd') ? moment(request.input('dateEnd')).format('yyyy-MM-DD') : '';
 
-        if(!serialNo) {
+        if (!serialNo) {
             return response.status(400).send({
                 status: false,
                 msg: 'Please  device serial number',
@@ -84,7 +88,7 @@ export default class DevicesController {
         // get device info
         const device = await Device.findBy('serial_number', serialNo);
 
-        if(!device) {
+        if (!device) {
             return response.status(404).send({
                 status: false,
                 msg: `Device with serial number ${serialNo}, was not found!`,
@@ -92,15 +96,15 @@ export default class DevicesController {
         }
 
         // get all sensor readings...
-        const sensorReadings = await Report
-            .query()
-            .where('updated_at', '>=', startDate)
-            .andWhere('updated_at', '<=', endDate)
-            .orderBy('updated_at', 'desc')
-            .debug(true)
-            .paginate(page, limit);        
-    
-        return sensorReadings;
+        const sensorReadings = Report.query();
+
+        if (startDate && endDate) {
+            sensorReadings.orWhere('updated_at', '>=', startDate);
+            sensorReadings.andWhere('updated_at', '<=', endDate);
+        }
+
+        const results = await sensorReadings.orderBy('updated_at', 'desc').paginate(page, limit);
+        return results;
     }
 
     public async sensorReadingsData() {

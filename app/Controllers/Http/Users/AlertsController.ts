@@ -68,11 +68,7 @@ export default class AlertsController {
             alerts.where('resolve_state', '=', 'resolved');
         }
 
-        // others...
-        alerts.orderBy('updated_at', 'desc');
-        alerts.paginate(page, limit); // pagination
-
-        const results = await alerts;
+        const results = await alerts.orderBy('updated_at', 'desc').paginate(page, limit);
         return results; // return alerts...
     }
 

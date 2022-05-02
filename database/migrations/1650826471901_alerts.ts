@@ -33,10 +33,10 @@ export default class Alerts extends BaseSchema {
             table.string('alert_data_type', 100);
             
             // reference
-            table.string('reference', 100);
+            table.string('reference', 100).nullable();
 
             // sensor ID...
-            table.bigInteger('sensor_id');
+            table.bigInteger('sensor_id').nullable();
 
             // the timestamp (UTC) of when the server noticed the alert (use create at)
 

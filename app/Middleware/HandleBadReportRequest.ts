@@ -8,7 +8,7 @@ import moment from 'moment';
 
 export default class HandleBadReportRequest {
     public async handle({ request }: HttpContextContract, next: () => Promise<void>) {
-    // let us handle bad report request...
+        // let us handle bad report request...
 
         // request body...
         const requestData = request.body();
@@ -67,11 +67,11 @@ export default class HandleBadReportRequest {
         const formatErrorCount = await Alert.query()
             .where('serial_number', requestData.serialNo)
             .where('alert_sensor', 'formatError')
-            .where('updated_at', '=>', moment(device?.updated_at).format('yyyy-MM-DD'))
+            .where('updated_at', '>=', moment(device?.updated_at).format('yyyy-MM-DD'))
             .limit(500);
 
-        if(formatErrorCount.length === 500) {
-        // create new alert...
+        if (formatErrorCount.length === 500) {
+            // create new alert...
             await Alert.create({
                 serial_number: requestData.serialNo,
                 alert_note: 'Device sending unintelligible data',
