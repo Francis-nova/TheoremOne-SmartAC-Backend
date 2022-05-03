@@ -4,6 +4,13 @@ This is the backend for TheoremOne backend...
 
 ## Installation
 
+Firstly run it in your root folder.
+```
+cp .env.example .env
+```
+then update your Mysql connection info.
+
+## install node_modules
 Use your favorite package manager to install node_module.
 
 ```bash
